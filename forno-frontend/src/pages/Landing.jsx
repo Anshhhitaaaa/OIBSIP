@@ -125,7 +125,7 @@ const Landing = () => {
             <p className="text-xl text-charcoal/70">Our most loved pizzas, crafted with perfection</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {mockPizzas.map((pizza) => (
+            {mockPizzas.slice(0,4).map((pizza) => (
               <Card key={pizza.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                 <img 
                   src={pizza.image} 
@@ -154,6 +154,11 @@ const Landing = () => {
                 </div>
               </Card>
             ))}
+          </div>
+          <div className="text-center mt-12">
+            <Link to="/menu">
+              <Button size="xl">View Full Menu</Button>
+            </Link>
           </div>
         </div>
       </section>
