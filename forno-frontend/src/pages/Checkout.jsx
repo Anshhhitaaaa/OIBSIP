@@ -18,7 +18,7 @@ const Checkout = () => {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [newOrderId, setNewOrderId] = useState(null);
   const [error, setError] = useState('');
-  const { cart, total, address, phone } = location.state || {};
+  const { cart, total, address, phone, appliedCoupon, discount } = location.state || {};
 
   if (!cart || cart.length === 0) {
     navigate('/dashboard');
@@ -100,10 +100,29 @@ const Checkout = () => {
 
         <Card className="p-8">
           <div className="text-center mb-8">
-            <p className="text-charcoal/70 mb-2">Amount to Pay</p>
-            <p className="font-ibmMono text-5xl font-bold text-char-orange">
-              ₹{total}
-            </p>
+            <div className="mb-6 text-left">
+              <h3 className="font-semibold text-charcoal mb-3">Order Summary</h3>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-charcoal/70">Items</span>
+                  <span className="font-semibold text-charcoal">
+                    ₹{(total + (discount || 0))}
+                  </span>
+                </div>
+                {appliedCoupon && discount > 0 && (
+                  <div className="flex justify-between text-green-600">
+                    <span>Discount ({appliedCoupon.code})</span>
+                    <span className="font-semibold">-₹{discount}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="pt-4 border-t border-charcoal/10">
+              <p className="text-charcoal/70 mb-2">Amount to Pay</p>
+              <p className="font-ibmMono text-5xl font-bold text-char-orange">
+                ₹{total}
+              </p>
+            </div>
           </div>
 
           <Button

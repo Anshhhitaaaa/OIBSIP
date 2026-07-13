@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import Button from './ui/Button';
 import { Flame } from 'lucide-react';
@@ -8,6 +8,9 @@ import { Flame } from 'lucide-react';
 const AdminNavbar = () => {
   const { admin, logout } = useAdminAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const isActive = (path) => location.pathname === path;
 
   const handleLogout = () => {
     logout();
@@ -31,27 +34,55 @@ const AdminNavbar = () => {
           <div className="flex items-center gap-6">
             <Link 
               to="/" 
-              className="text-warm-cream/80 hover:text-warm-cream font-medium"
+              className={`relative font-medium transition-colors ${
+                isActive('/') 
+                  ? 'text-warm-cream' 
+                  : 'text-warm-cream/80 hover:text-warm-cream'
+              }`}
             >
               Back to Site
+              {isActive('/') && (
+                <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+              )}
             </Link>
             <Link 
               to="/admin/dashboard" 
-              className="text-warm-cream/80 hover:text-warm-cream font-medium"
+              className={`relative font-medium transition-colors ${
+                isActive('/admin/dashboard') 
+                  ? 'text-warm-cream' 
+                  : 'text-warm-cream/80 hover:text-warm-cream'
+              }`}
             >
               Dashboard
+              {isActive('/admin/dashboard') && (
+                <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+              )}
             </Link>
             <Link 
               to="/admin/inventory" 
-              className="text-warm-cream/80 hover:text-warm-cream font-medium"
+              className={`relative font-medium transition-colors ${
+                isActive('/admin/inventory') 
+                  ? 'text-warm-cream' 
+                  : 'text-warm-cream/80 hover:text-warm-cream'
+              }`}
             >
               Inventory
+              {isActive('/admin/inventory') && (
+                <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+              )}
             </Link>
             <Link 
               to="/admin/orders" 
-              className="text-warm-cream/80 hover:text-warm-cream font-medium"
+              className={`relative font-medium transition-colors ${
+                isActive('/admin/orders') 
+                  ? 'text-warm-cream' 
+                  : 'text-warm-cream/80 hover:text-warm-cream'
+              }`}
             >
               Orders
+              {isActive('/admin/orders') && (
+                <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+              )}
             </Link>
             <div className="flex items-center gap-3">
               <span className="text-warm-cream font-medium">{admin.name}</span>

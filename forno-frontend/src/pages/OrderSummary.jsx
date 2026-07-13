@@ -12,8 +12,23 @@ const OrderSummary = () => {
   const navigate = useNavigate();
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
-  const { cart } = useOrder();
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  const { cart, appliedCoupon } = useOrder();
+  const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+  
+  let discount = 0;
+  if (appliedCoupon) {
+    if (appliedCoupon.discount.includes('%')) {
+      const percentage = parseInt(appliedCoupon.discount);
+      discount = (subtotal * percentage) / 100;
+    } else if (appliedCoupon.discount === 'BOGO') {
+      if (cart.length >= 2) {
+        const prices = cart.map(item => item.price).sort((a, b) => a - b);
+        discount = prices[0];
+      }
+    }
+  }
+  
+  const total = Math.max(0, subtotal - discount);
 
   if (cart.length === 0) {
     navigate('/dashboard');
@@ -71,10 +86,26 @@ const OrderSummary = () => {
             ))}
 
             <Card className="p-6 bg-mozzarella/20 border-mozzarella">
-              <div className="flex justify-between items-center">
+              <div className="space-y-3 mb-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-charcoal/70">Subtotal</span>
+                  <span className="font-ibmMono font-semibold text-charcoal">₹{subtotal}</span>
+                </div>
+                {appliedCoupon && discount > 0 && (
+                  <div className="flex justify-between items-center text-green-600">
+                    <span>
+                      Discount ({appliedCoupon.code})
+                    </span>
+                    <span className="font-ibmMono font-semibold">
+                      -₹{Math.round(discount)}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="flex justify-between items-center pt-3 border-t border-charcoal/10">
                 <span className="text-xl font-semibold text-charcoal">Total</span>
                 <span className="font-ibmMono text-3xl font-bold text-char-orange">
-                  ₹{total}
+                  ₹{Math.round(total)}
                 </span>
               </div>
             </Card>
@@ -105,7 +136,16 @@ const OrderSummary = () => {
               <Button
                 className="w-full mt-8"
                 size="lg"
-                onClick={() => navigate('/checkout', { state: { cart, total, address, phone } })}
+                onClick={() => navigate('/checkout', { 
+                  state: { 
+                    cart, 
+                    total: Math.round(total), 
+                    address, 
+                    phone, 
+                    appliedCoupon,
+                    discount: Math.round(discount)
+                  } 
+                })}
                 disabled={!address || !phone}
               >
                 Proceed to Payment

@@ -1,17 +1,51 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UserNavbar from '../components/UserNavbar';
 import Footer from '../components/ui/Footer';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
+import Input from '../components/ui/Input';
 import { useOrder } from '../context/OrderContext';
-import { Trash2 } from 'lucide-react';
+import { Trash2, X } from 'lucide-react';
 
 const Cart = () => {
-  const { cart, clearCart, removeFromCart } = useOrder();
+  const { 
+    cart, 
+    clearCart, 
+    removeFromCart, 
+    appliedCoupon, 
+    availableCoupons, 
+    applyCoupon, 
+    removeCoupon 
+  } = useOrder();
   const navigate = useNavigate();
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  const [couponCode, setCouponCode] = useState('');
+  
+  const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+  
+  let discount = 0;
+  if (appliedCoupon) {
+    if (appliedCoupon.discount.includes('%')) {
+      const percentage = parseInt(appliedCoupon.discount);
+      discount = (subtotal * percentage) / 100;
+    } else if (appliedCoupon.discount === 'BOGO') {
+      // BOGO logic: take cheapest item free
+      if (cart.length >= 2) {
+        const prices = cart.map(item => item.price).sort((a, b) => a - b);
+        discount = prices[0];
+      }
+    }
+  }
+  
+  const total = Math.max(0, subtotal - discount);
+  
+  const handleApplyCoupon = () => {
+    const coupon = availableCoupons.find(c => c.code.toLowerCase() === couponCode.toLowerCase());
+    if (coupon) {
+      applyCoupon(coupon);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-warm-cream flex flex-col">
@@ -79,14 +113,98 @@ const Cart = () => {
               </Card>
             ))}
 
+            {/* Coupon Section */}
+            <Card className="p-6">
+              <h3 className="font-fraunces text-xl font-bold text-charcoal mb-4">
+                Apply Coupon
+              </h3>
+              <div className="flex gap-3 mb-4">
+                <Input 
+                  placeholder="Enter coupon code" 
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  className="flex-1"
+                />
+                <Button onClick={handleApplyCoupon} disabled={!couponCode}>
+                  Apply
+                </Button>
+              </div>
+              
+              {appliedCoupon && (
+                <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-green-700">
+                      {appliedCoupon.code}
+                    </span>
+                    <span className="text-green-600 text-sm">
+                      {appliedCoupon.title}
+                    </span>
+                  </div>
+                  <button 
+                    onClick={removeCoupon} 
+                    className="text-green-700 hover:text-green-900"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+              
+              {/* Available Coupons */}
+              <div>
+                <h4 className="text-sm font-semibold text-charcoal/70 mb-2">
+                  Available Coupons
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {availableCoupons.map((coupon) => (
+                    <div 
+                      key={coupon.id} 
+                      className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                        appliedCoupon?.id === coupon.id 
+                          ? 'border-char-orange bg-char-orange/5' 
+                          : 'border-charcoal/10 hover:border-char-orange/50'
+                      }`}
+                      onClick={() => applyCoupon(coupon)}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span className="font-semibold text-charcoal">{coupon.code}</span>
+                        <span className="text-sm text-char-orange font-bold">{coupon.discount}</span>
+                      </div>
+                      <p className="text-xs text-charcoal/70 mt-1">{coupon.title}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+            
+            {/* Total Section */}
             <Card className="p-6 bg-mozzarella/20 border-mozzarella">
-              <div className="flex justify-between items-center mb-6">
-                <span className="text-xl font-semibold text-charcoal">
-                  Total
-                </span>
-                <span className="font-ibmMono text-3xl font-bold text-char-orange">
-                  ₹{total}
-                </span>
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between items-center">
+                  <span className="text-charcoal/70">
+                    Subtotal
+                  </span>
+                  <span className="font-ibmMono font-semibold text-charcoal">
+                    ₹{subtotal}
+                  </span>
+                </div>
+                {discount > 0 && (
+                  <div className="flex justify-between items-center text-green-600">
+                    <span>
+                      Discount
+                    </span>
+                    <span className="font-ibmMono font-semibold">
+                      -₹{Math.round(discount)}
+                    </span>
+                  </div>
+                )}
+                <div className="flex justify-between items-center pt-3 border-t border-charcoal/10">
+                  <span className="text-xl font-semibold text-charcoal">
+                    Total
+                  </span>
+                  <span className="font-ibmMono text-3xl font-bold text-char-orange">
+                    ₹{Math.round(total)}
+                  </span>
+                </div>
               </div>
               <div className="flex gap-4">
                 <Button variant="ghost" onClick={clearCart} className="flex-1">

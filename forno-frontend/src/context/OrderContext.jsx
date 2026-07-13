@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../lib/api';
 import { useAuth } from './AuthContext';
+import { mockOffers } from '../data/mockData';
 
 const OrderContext = createContext();
 
@@ -10,6 +11,7 @@ export const OrderProvider = ({ children }) => {
   const [activeOrder, setActiveOrder] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
   const { user, isLoading: authLoading } = useAuth();
 
   // Load from localStorage
@@ -59,6 +61,14 @@ export const OrderProvider = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
+  };
+  
+  const applyCoupon = (coupon) => {
+    setAppliedCoupon(coupon);
+  };
+  
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
   };
 
   const placeOrder = async (orderData) => {
@@ -117,7 +127,11 @@ export const OrderProvider = ({ children }) => {
         orders,
         setOrders,
         loading,
-        refetchOrders
+        refetchOrders,
+        appliedCoupon,
+        availableCoupons: mockOffers,
+        applyCoupon,
+        removeCoupon
       }}
     >
       {children}

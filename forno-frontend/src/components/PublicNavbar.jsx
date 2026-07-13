@@ -1,10 +1,14 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Button from './ui/Button';
 import { Flame } from 'lucide-react';
 
 const PublicNavbar = () => {
+  const location = useLocation();
+  
+  const isActive = (path) => location.pathname === path;
+  
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -21,14 +25,44 @@ const PublicNavbar = () => {
         </Link>
         
         <div className="hidden md:flex items-center gap-8">
-          <Link to="/menu" className="text-charcoal/70 hover:text-charcoal font-medium transition-colors">
+          <Link 
+            to="/menu" 
+            className={`relative font-medium transition-colors ${
+              isActive('/menu') 
+                ? 'text-charcoal' 
+                : 'text-charcoal/70 hover:text-charcoal'
+            }`}
+          >
             Menu
+            {isActive('/menu') && (
+              <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+            )}
           </Link>
-          <Link to="/about" className="text-charcoal/70 hover:text-charcoal font-medium transition-colors">
+          <Link 
+            to="/about" 
+            className={`relative font-medium transition-colors ${
+              isActive('/about') 
+                ? 'text-charcoal' 
+                : 'text-charcoal/70 hover:text-charcoal'
+            }`}
+          >
             About Us
+            {isActive('/about') && (
+              <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+            )}
           </Link>
-          <Link to="/contact" className="text-charcoal/70 hover:text-charcoal font-medium transition-colors">
+          <Link 
+            to="/contact" 
+            className={`relative font-medium transition-colors ${
+              isActive('/contact') 
+                ? 'text-charcoal' 
+                : 'text-charcoal/70 hover:text-charcoal'
+            }`}
+          >
             Contact
+            {isActive('/contact') && (
+              <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+            )}
           </Link>
         </div>
         

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useOrder } from '../context/OrderContext';
 import Button from './ui/Button';
@@ -10,7 +10,10 @@ const UserNavbar = () => {
   const { user, logout } = useAuth();
   const { activeOrder, cart } = useOrder();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const isActive = (path) => location.pathname === path;
 
   const handleLogout = () => {
     logout();
@@ -27,19 +30,59 @@ const UserNavbar = () => {
         
         {user && (
           <div className="flex items-center gap-6">
-            <Link to="/menu" className="text-charcoal/70 hover:text-charcoal font-medium">
+            <Link 
+              to="/menu" 
+              className={`relative font-medium transition-colors ${
+                isActive('/menu') 
+                  ? 'text-charcoal' 
+                  : 'text-charcoal/70 hover:text-charcoal'
+              }`}
+            >
               Menu
+              {isActive('/menu') && (
+                <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+              )}
             </Link>
-            <Link to="/builder" className="text-charcoal/70 hover:text-charcoal font-medium">
+            <Link 
+              to="/builder" 
+              className={`relative font-medium transition-colors ${
+                isActive('/builder') 
+                  ? 'text-charcoal' 
+                  : 'text-charcoal/70 hover:text-charcoal'
+              }`}
+            >
               Build Your Own
+              {isActive('/builder') && (
+                <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+              )}
             </Link>
-            <Link to="/orders" className="text-charcoal/70 hover:text-charcoal font-medium">
+            <Link 
+              to="/orders" 
+              className={`relative font-medium transition-colors ${
+                isActive('/orders') 
+                  ? 'text-charcoal' 
+                  : 'text-charcoal/70 hover:text-charcoal'
+              }`}
+            >
               My Orders
+              {isActive('/orders') && (
+                <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+              )}
             </Link>
             
             {user.isAdmin && (
-              <Link to="/admin/dashboard" className="text-char-orange hover:text-char-orange/80 font-semibold">
+              <Link 
+                to="/admin/dashboard" 
+                className={`relative font-semibold transition-colors ${
+                  isActive('/admin/dashboard') 
+                    ? 'text-char-orange' 
+                    : 'text-char-orange hover:text-char-orange/80'
+                }`}
+              >
                 Admin Dashboard
+                {isActive('/admin/dashboard') && (
+                  <span className="absolute left-0 right-0 bottom-[-6px] h-1 bg-char-orange rounded-full" />
+                )}
               </Link>
             )}
             
