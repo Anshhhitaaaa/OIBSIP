@@ -13,7 +13,7 @@ const OrderSummary = () => {
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const { cart } = useOrder();
-  const total = cart.reduce((sum, item) => sum + item.total, 0);
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   if (cart.length === 0) {
     navigate('/dashboard');
@@ -50,12 +50,12 @@ const OrderSummary = () => {
                   />
                 )}
                 <div className="space-y-3 text-charcoal/80">
-                  {pizza.base && <p><strong>Base:</strong> {pizza.base.name}</p>}
-                  {pizza.sauce && <p><strong>Sauce:</strong> {pizza.sauce.name}</p>}
-                  {pizza.cheese && <p><strong>Cheese:</strong> {pizza.cheese.name}</p>}
-                  {pizza.veggies && pizza.veggies.length > 0 && (
+                  {pizza.base && <p><strong>Base:</strong> {pizza.base}</p>}
+                  {pizza.sauce && <p><strong>Sauce:</strong> {pizza.sauce}</p>}
+                  {pizza.cheese && <p><strong>Cheese:</strong> {pizza.cheese}</p>}
+                  {pizza.vegetables && pizza.vegetables.length > 0 && (
                     <p>
-                      <strong>Veggies:</strong> {pizza.veggies.map(v => v.name).join(', ')}
+                      <strong>Veggies:</strong> {pizza.vegetables.join(', ')}
                     </p>
                   )}
                 </div>
@@ -63,7 +63,7 @@ const OrderSummary = () => {
                   <div className="flex justify-between items-center">
                     <span className="font-semibold text-charcoal">Price</span>
                     <span className="font-ibmMono font-bold text-char-orange">
-                      ₹{pizza.total}
+                      ₹{pizza.price}
                     </span>
                   </div>
                 </div>

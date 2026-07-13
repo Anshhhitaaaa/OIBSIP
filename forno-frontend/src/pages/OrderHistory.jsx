@@ -11,7 +11,19 @@ import { useOrder } from '../context/OrderContext';
 
 const OrderHistory = () => {
   const navigate = useNavigate();
-  const { orders } = useOrder();
+  const { orders, loading } = useOrder();
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-warm-cream flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-char-orange border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-charcoal/70">Loading orders...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-warm-cream flex flex-col">
       <UserNavbar />
@@ -27,7 +39,7 @@ const OrderHistory = () => {
         </h1>
 
         {orders.length === 0 ? (
-          <div className="text-center py-16">
+          <div className="text-center py-12">
             <div className="text-6xl mb-4">🍕</div>
             <h2 className="font-fraunces text-2xl font-bold text-charcoal mb-2">
               No Orders Yet
@@ -42,11 +54,11 @@ const OrderHistory = () => {
         ) : (
           <div className="space-y-6">
             {orders.map((order) => (
-              <Card key={order.id} className="p-6">
+              <Card key={order._id} className="p-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                   <div>
                     <p className="font-ibmMono font-bold text-xl text-charcoal mb-1">
-                      Order #{order.id.slice(-6).toUpperCase()}
+                      Order #{order._id.slice(-6).toUpperCase()}
                     </p>
                     <p className="text-charcoal/70 text-sm">
                       {new Date(order.createdAt).toLocaleString()}
@@ -71,7 +83,7 @@ const OrderHistory = () => {
                   <div className="flex flex-wrap gap-2">
                     {order.items && order.items.slice(0, 3).map((item, idx) => (
                       <div key={idx} className="text-sm text-charcoal/70 bg-mozzarella/30 px-2 py-1 rounded">
-                        {item.name}
+                        Pizza
                       </div>
                     ))}
                     {order.items && order.items.length > 3 && (
@@ -87,7 +99,7 @@ const OrderHistory = () => {
                 )}
 
                 <div className="flex gap-3 justify-end">
-                  <Link to={`/orders/${order.id}`}>
+                  <Link to={`/orders/${order._id}`}>
                     <Button variant="ghost" size="sm">
                       View Details
                     </Button>

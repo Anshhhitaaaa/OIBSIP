@@ -1,6 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { mockUserOrders } from '../data/mockData';
+import api from '../lib/api';
+import { useAuth } from './AuthContext';
 
 const OrderContext = createContext();
 
@@ -8,36 +9,42 @@ export const OrderProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [activeOrder, setActiveOrder] = useState(null);
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { user, isLoading: authLoading } = useAuth();
 
   // Load from localStorage
   useEffect(() => {
-    const savedActiveOrder = localStorage.getItem('forno_active_order');
-    if (savedActiveOrder) {
-      setActiveOrder(JSON.parse(savedActiveOrder));
-    }
-    const savedOrders = localStorage.getItem('forno_orders');
-    if (savedOrders) {
-      setOrders(JSON.parse(savedOrders));
-    }
     const savedCart = localStorage.getItem('forno_cart');
     if (savedCart) {
       setCart(JSON.parse(savedCart));
     }
   }, []);
 
-  // Save to localStorage
+  // Fetch orders from backend when user is authenticated
   useEffect(() => {
-    if (activeOrder) {
-      localStorage.setItem('forno_active_order', JSON.stringify(activeOrder));
-    } else {
-      localStorage.removeItem('forno_active_order');
-    }
-  }, [activeOrder]);
+    const fetchOrders = async () => {
+      if (user && !authLoading) {
+        setLoading(true);
+        try {
+          const res = await api.get('/orders/myorders');
+          setOrders(res.data);
+          if (res.data.length > 0 && res.data[0].status !== 'Delivered') {
+            setActiveOrder(res.data[0]);
+          }
+        } catch (err) {
+          console.error('Failed to fetch orders', err);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setOrders([]);
+        setActiveOrder(null);
+      }
+    };
+    fetchOrders();
+  }, [user, authLoading]);
 
-  useEffect(() => {
-    localStorage.setItem('forno_orders', JSON.stringify(orders));
-  }, [orders]);
-
+  // Save cart to localStorage
   useEffect(() => {
     localStorage.setItem('forno_cart', JSON.stringify(cart));
   }, [cart]);
@@ -54,28 +61,46 @@ export const OrderProvider = ({ children }) => {
     setCart([]);
   };
 
-  const placeOrder = (orderData) => {
-    const newOrder = {
-      id: 'o' + Date.now(),
-      ...orderData,
-      status: 'Order Received',
-      createdAt: new Date().toISOString()
-    };
-    setOrders([newOrder, ...orders]);
-    setActiveOrder(newOrder);
-    clearCart();
-    return newOrder;
+  const placeOrder = async (orderData) => {
+    try {
+      const res = await api.post('/orders', orderData);
+      const newOrder = res.data;
+      setOrders([newOrder, ...orders]);
+      setActiveOrder(newOrder);
+      clearCart();
+      return newOrder;
+    } catch (err) {
+      console.error('Failed to place order', err);
+      throw err;
+    }
   };
 
   const updateOrderStatus = (orderId, status) => {
-    setOrders(orders.map(o => o.id === orderId ? { ...o, status } : o));
-    if (activeOrder && activeOrder.id === orderId) {
+    setOrders(orders.map(o => o._id === orderId ? { ...o, status } : o));
+    if (activeOrder && activeOrder._id === orderId) {
       setActiveOrder({ ...activeOrder, status });
     }
   };
 
   const clearActiveOrder = () => {
     setActiveOrder(null);
+  };
+
+  const refetchOrders = async () => {
+    if (user) {
+      setLoading(true);
+      try {
+        const res = await api.get('/orders/myorders');
+        setOrders(res.data);
+        if (res.data.length > 0 && res.data[0].status !== 'Delivered') {
+          setActiveOrder(res.data[0]);
+        }
+      } catch (err) {
+        console.error('Failed to refetch orders', err);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   return (
@@ -90,7 +115,9 @@ export const OrderProvider = ({ children }) => {
         updateOrderStatus,
         clearActiveOrder,
         orders,
-        setOrders
+        setOrders,
+        loading,
+        refetchOrders
       }}
     >
       {children}

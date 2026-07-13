@@ -11,7 +11,7 @@ import { Trash2 } from 'lucide-react';
 const Cart = () => {
   const { cart, clearCart, removeFromCart } = useOrder();
   const navigate = useNavigate();
-  const total = cart.reduce((sum, item) => sum + item.total, 0);
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
     <div className="min-h-screen bg-warm-cream flex flex-col">
@@ -54,17 +54,17 @@ const Cart = () => {
                       {item.name}
                     </h3>
                     <div className="text-sm text-charcoal/70 space-y-1">
-                      {item.base && <p>Base: {item.base.name}</p>}
-                      {item.sauce && <p>Sauce: {item.sauce.name}</p>}
-                      {item.cheese && <p>Cheese: {item.cheese.name}</p>}
-                      {item.veggies && item.veggies.length > 0 && (
-                        <p>Veggies: {item.veggies.map(v => v.name).join(', ')}</p>
+                      {item.base && <p>Base: {item.base}</p>}
+                      {item.sauce && <p>Sauce: {item.sauce}</p>}
+                      {item.cheese && <p>Cheese: {item.cheese}</p>}
+                      {item.vegetables && item.vegetables.length > 0 && (
+                        <p>Veggies: {item.vegetables.join(', ')}</p>
                       )}
                     </div>
                   </div>
                   <div className="text-right flex flex-col items-end gap-2">
                     <p className="font-ibmMono text-2xl font-bold text-char-orange">
-                      ₹{item.total}
+                      ₹{item.price}
                     </p>
                     <Button 
                       variant="ghost" 

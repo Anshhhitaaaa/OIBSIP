@@ -18,11 +18,11 @@ const Menu = () => {
     addToCart({
       id: pizza.id,
       name: pizza.name,
-      base: pizza.base,
-      sauce: pizza.sauce,
-      cheese: pizza.cheese,
-      veggies: pizza.veggies,
-      total: pizza.price,
+      base: pizza.base.name,
+      sauce: pizza.sauce.name,
+      cheese: pizza.cheese.name,
+      vegetables: pizza.veggies.map(v => v.name),
+      price: pizza.price,
       image: pizza.image,
       description: pizza.description
     });

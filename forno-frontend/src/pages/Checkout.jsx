@@ -17,6 +17,7 @@ const Checkout = () => {
   const [showModal, setShowModal] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [newOrderId, setNewOrderId] = useState(null);
+  const [error, setError] = useState('');
   const { cart, total, address, phone } = location.state || {};
 
   if (!cart || cart.length === 0) {
@@ -28,17 +29,25 @@ const Checkout = () => {
     setShowModal(false);
     setIsProcessing(true);
     
-    // Place the order
-    const newOrder = placeOrder({
-      items: cart,
-      total,
-      address,
-      phone
-    });
-    
-    setNewOrderId(newOrder.id);
-    setIsProcessing(false);
-    setPaymentSuccess(true);
+    // Place the order with backend
+    try {
+      const newOrder = await placeOrder({
+        items: cart.map(item => ({
+          base: item.base,
+          sauce: item.sauce,
+          cheese: item.cheese,
+          vegetables: item.vegetables,
+          price: item.price
+        })),
+        total
+      });
+      setNewOrderId(newOrder._id);
+      setIsProcessing(false);
+      setPaymentSuccess(true);
+    } catch (err) {
+      setError('Failed to place order, please try again');
+      setIsProcessing(false);
+    }
   };
 
   if (paymentSuccess) {

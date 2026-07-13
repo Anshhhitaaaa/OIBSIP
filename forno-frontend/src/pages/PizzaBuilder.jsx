@@ -311,7 +311,7 @@ const PizzaBuilder = () => {
                 </Button>
               ) : (
                 <Button size="lg" onClick={() => {
-                  const pizza = { base, sauce, cheese, veggies, total, id: 'p' + Date.now(), name: 'Custom Pizza' };
+                  const pizza = { base: base.name, sauce: sauce.name, cheese: cheese.name, vegetables: veggies.map(v => v.name), price: total, id: 'p' + Date.now(), name: 'Custom Pizza' };
                   addToCart({
                     ...pizza,
                     image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=600'

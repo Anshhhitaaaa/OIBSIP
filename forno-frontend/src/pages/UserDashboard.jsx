@@ -27,11 +27,11 @@ const UserDashboard = () => {
     const pizzaItem = {
       id: pizza.id,
       name: pizza.name,
-      base: pizza.base,
-      sauce: pizza.sauce,
-      cheese: pizza.cheese,
-      veggies: pizza.veggies,
-      total: pizza.price,
+      base: pizza.base.name,
+      sauce: pizza.sauce.name,
+      cheese: pizza.cheese.name,
+      vegetables: pizza.veggies.map(v => v.name),
+      price: pizza.price,
       image: pizza.image,
       description: pizza.description
     };
@@ -82,7 +82,7 @@ const UserDashboard = () => {
             </h2>
             <OrderStatusTracker status={activeOrder.status} />
             <div className="mt-4 text-center">
-              <Link to={`/orders/${activeOrder.id}`} className="text-char-orange hover:underline font-semibold">
+              <Link to={`/orders/${activeOrder._id}`} className="text-char-orange hover:underline font-semibold">
                 View Order Details →
               </Link>
             </div>

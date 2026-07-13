@@ -10,42 +10,34 @@ import { useOrder } from '../context/OrderContext';
 const OrderTracking = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { orders, activeOrder, updateOrderStatus, clearActiveOrder } = useOrder();
+  const { orders, activeOrder, loading } = useOrder();
   const [order, setOrder] = useState(null);
-  const statuses = ['Order Received', 'In Kitchen', 'Sent to Delivery', 'Delivered'];
 
   useEffect(() => {
-    // Find the order by id
-    const foundOrder = orders.find(o => o.id === id) || activeOrder;
+    // Find the order by _id
+    const foundOrder = orders.find(o => o._id === id) || (activeOrder && activeOrder._id === id ? activeOrder : null);
     setOrder(foundOrder);
-    
-    // Simulate real-time status updates (polling)
-    const interval = setInterval(() => {
-      if (!foundOrder) return;
-      const currentIdx = statuses.indexOf(foundOrder.status);
-      if (currentIdx < statuses.length - 1) {
-        const newStatus = statuses[currentIdx + 1];
-        updateOrderStatus(foundOrder.id, newStatus);
-        
-        // If delivered, clear active order after a delay
-        if (newStatus === 'Delivered') {
-          setTimeout(() => clearActiveOrder(), 10000);
-        }
-      }
-    }, 8000);
-    
-    return () => clearInterval(interval);
-  }, [id, orders, activeOrder, updateOrderStatus, clearActiveOrder]);
+  }, [id, orders, activeOrder]);
 
-  if (!order) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-warm-cream flex items-center justify-center">
-        <div className="text-charcoal/70">Loading...</div>
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-char-orange border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-charcoal/70">Loading order...</p>
+        </div>
       </div>
     );
   }
 
-  const statusIndex = statuses.indexOf(order.status);
+  if (!order) {
+    return (
+      <div className="min-h-screen bg-warm-cream flex items-center justify-center">
+        <div className="text-charcoal/70">Order not found</div>
+      </div>
+    );
+  }
+
   const currentStatus = order.status;
   const isDelivered = currentStatus === 'Delivered';
 
@@ -65,7 +57,7 @@ const OrderTracking = () => {
           ← Back to Menu
         </button>
         <h1 className="font-fraunces text-4xl font-bold text-charcoal mb-2 text-center">
-          Order #{order.id.slice(-6).toUpperCase()}
+          Order #{order._id.slice(-6).toUpperCase()}
         </h1>
         <p className="text-charcoal/70 text-center mb-12">
           {new Date(order.createdAt).toLocaleString()}
@@ -85,16 +77,9 @@ const OrderTracking = () => {
             <div className="space-y-4">
               {order.items.map((item, i) => (
                 <div key={i} className="flex items-center gap-4">
-                  {item.image && (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-20 h-20 object-cover rounded-lg"
-                    />
-                  )}
                   <div>
-                    <p className="font-semibold text-charcoal">{item.name || `Pizza ${i + 1}`}</p>
-                    <p className="text-charcoal/60 text-sm">₹{item.total}</p>
+                    <p className="font-semibold text-charcoal">Pizza {i + 1}</p>
+                    <p className="text-charcoal/60 text-sm">₹{item.price}</p>
                   </div>
                 </div>
               ))}
@@ -107,8 +92,6 @@ const OrderTracking = () => {
             </h2>
             <div className="space-y-2 text-charcoal/80">
               <p><strong>Estimated Delivery:</strong> {estimatedDelivery}</p>
-              {order.address && <p><strong>Address:</strong> {order.address}</p>}
-              {order.phone && <p><strong>Phone:</strong> {order.phone}</p>}
               <p><strong>Total:</strong> <span className="font-ibmMono font-bold text-char-orange">₹{order.total}</span></p>
             </div>
           </Card>
