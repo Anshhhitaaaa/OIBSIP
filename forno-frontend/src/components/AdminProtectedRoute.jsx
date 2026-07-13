@@ -2,11 +2,13 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAdminAuth } from '../context/AdminAuthContext';
+import { useAuth } from '../context/AuthContext';
 
 const AdminProtectedRoute = ({ children }) => {
-  const { admin, isLoading } = useAdminAuth();
+  const { admin, isLoading: adminLoading } = useAdminAuth();
+  const { user, isLoading: userLoading } = useAuth();
 
-  if (isLoading) {
+  if (adminLoading || userLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-charcoal">
         <div className="text-center">
@@ -17,7 +19,8 @@ const AdminProtectedRoute = ({ children }) => {
     );
   }
 
-  return admin ? children : <Navigate to="/admin/login" replace />;
+  const isAdmin = admin || (user && user.isAdmin);
+  return isAdmin ? children : <Navigate to="/admin/login" replace />;
 };
 
 export default AdminProtectedRoute;

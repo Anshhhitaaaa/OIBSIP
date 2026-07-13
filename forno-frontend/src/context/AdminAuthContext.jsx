@@ -1,9 +1,11 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const AdminAuthContext = createContext();
 
 export const AdminAuthProvider = ({ children }) => {
+  const { user, token } = useAuth();
   const [admin, setAdmin] = useState(null);
   const [adminToken, setAdminToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,8 +17,13 @@ export const AdminAuthProvider = ({ children }) => {
       setAdminToken(savedToken);
       setAdmin(JSON.parse(savedAdmin));
     }
+    // Also check if regular user is admin
+    else if (user && user.isAdmin) {
+      setAdmin(user);
+      setAdminToken(token);
+    }
     setIsLoading(false);
-  }, []);
+  }, [user, token]);
 
   const login = async (email, password) => {
     // Mock admin login

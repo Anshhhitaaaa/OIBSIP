@@ -37,6 +37,12 @@ const UserNavbar = () => {
               My Orders
             </Link>
             
+            {user.isAdmin && (
+              <Link to="/admin/dashboard" className="text-char-orange hover:text-char-orange/80 font-semibold">
+                Admin Dashboard
+              </Link>
+            )}
+            
             {activeOrder && (
               <Link to={`/orders/${activeOrder.id}`} className="flex items-center gap-1 text-char-orange font-semibold hover:opacity-80 transition-opacity">
                 <MapPin className="w-4 h-4" />

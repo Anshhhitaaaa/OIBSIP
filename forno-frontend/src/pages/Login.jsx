@@ -18,8 +18,12 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      await login(email, password);
-      navigate('/dashboard');
+      const userData = await login(email, password);
+      if (userData.isAdmin) {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError('Invalid email or password. Please try again.');
     }
