@@ -7,6 +7,7 @@ import Badge from '../components/ui/Badge';
 import UserNavbar from '../components/UserNavbar';
 import Footer from '../components/ui/Footer';
 import OrderStatusTracker from '../components/OrderStatusTracker';
+import StarRating from '../components/ui/StarRating';
 import { mockPizzas, mockOffers } from '../data/mockData';
 import { Plus, Flame, Tag } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -134,6 +135,9 @@ const UserDashboard = () => {
                   <h3 className="font-fraunces text-2xl font-bold text-charcoal mb-2">
                     {pizza.name}
                   </h3>
+                  <div className="mb-3">
+                    <StarRating rating={pizza.rating} />
+                  </div>
                   <p className="text-charcoal/70 text-sm mb-6">
                     {pizza.description}
                   </p>

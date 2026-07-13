@@ -5,6 +5,7 @@ import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import PublicNavbar from '../components/PublicNavbar';
 import Footer from '../components/ui/Footer';
+import StarRating from '../components/ui/StarRating';
 import { mockPizzas, mockOffers } from '../data/mockData';
 import { Flame, Utensils, Truck, Star, Tag } from 'lucide-react';
 
@@ -143,6 +144,9 @@ const Landing = () => {
                   <h3 className="font-fraunces text-2xl font-bold text-charcoal mb-2">
                     {pizza.name}
                   </h3>
+                  <div className="mb-3">
+                    <StarRating rating={pizza.rating} />
+                  </div>
                   <p className="text-charcoal/70 text-sm mb-6">
                     {pizza.description}
                   </p>

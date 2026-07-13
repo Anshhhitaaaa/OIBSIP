@@ -6,6 +6,7 @@ import PublicNavbar from '../components/PublicNavbar';
 import UserNavbar from '../components/UserNavbar';
 import Footer from '../components/ui/Footer';
 import Badge from '../components/ui/Badge';
+import StarRating from '../components/ui/StarRating';
 import { mockPizzas } from '../data/mockData';
 import { useAuth } from '../context/AuthContext';
 import { useOrder } from '../context/OrderContext';
@@ -60,6 +61,9 @@ const Menu = () => {
                 <h3 className="font-fraunces text-2xl font-bold text-charcoal mb-2">
                   {pizza.name}
                 </h3>
+                <div className="mb-3">
+                  <StarRating rating={pizza.rating} />
+                </div>
                 <p className="text-charcoal/70 text-sm mb-6">
                   {pizza.description}
                 </p>
