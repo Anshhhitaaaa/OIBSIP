@@ -18,21 +18,27 @@ const ForgotPassword = () => {
   if (submitted) {
     return (
       <div className="min-h-screen bg-warm-cream flex items-center justify-center p-6">
-        <Card className="w-full max-w-md p-8 text-center">
-          <Link to="/" className="inline-flex items-center justify-center gap-2 mb-8">
-            <Flame className="w-8 h-8 text-char-orange" />
-            <span className="font-fraunces text-2xl font-bold text-charcoal">forno</span>
+        <Card className="w-full max-w-md p-8">
+          <Link to="/" className="flex items-center gap-2 text-charcoal/70 hover:text-charcoal mb-4">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Home
           </Link>
-          <div className="text-6xl mb-4">📧</div>
-          <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
-            Reset Link Sent
-          </h1>
-          <p className="text-charcoal/70 mb-8">
-            A password reset link has been sent to {email}.
-          </p>
-          <Link to="/login">
-            <Button>Back to Login</Button>
-          </Link>
+          <div className="text-center">
+            <Link to="/" className="inline-flex items-center justify-center gap-2 mb-8">
+              <Flame className="w-8 h-8 text-char-orange" />
+              <span className="font-fraunces text-2xl font-bold text-charcoal">forno</span>
+            </Link>
+            <div className="text-6xl mb-4">📧</div>
+            <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
+              Reset Link Sent
+            </h1>
+            <p className="text-charcoal/70 mb-8">
+              A password reset link has been sent to {email}.
+            </p>
+            <Link to="/login">
+              <Button>Back to Login</Button>
+            </Link>
+          </div>
         </Card>
       </div>
     );
@@ -51,10 +57,11 @@ const ForgotPassword = () => {
               <Flame className="w-8 h-8 text-char-orange" />
               <span className="font-fraunces text-2xl font-bold text-charcoal">forno</span>
             </Link>
-          <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
-            Forgot Password
-          </h1>
-          <p className="text-charcoal/70">Enter your email to reset your password</p>
+            <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
+              Forgot Password
+            </h1>
+            <p className="text-charcoal/70">Enter your email to reset your password</p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

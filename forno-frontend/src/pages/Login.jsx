@@ -42,10 +42,11 @@ const Login = () => {
               <Flame className="w-8 h-8 text-char-orange" />
               <span className="font-fraunces text-2xl font-bold text-charcoal">forno</span>
             </Link>
-          <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
-            Welcome Back
-          </h1>
-          <p className="text-charcoal/70">Sign in to your account</p>
+            <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
+              Welcome Back
+            </h1>
+            <p className="text-charcoal/70">Sign in to your account</p>
+          </div>
         </div>
 
         {error && (

@@ -39,10 +39,11 @@ const Register = () => {
               <Flame className="w-8 h-8 text-char-orange" />
               <span className="font-fraunces text-2xl font-bold text-charcoal">forno</span>
             </Link>
-          <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
-            Create Account
-          </h1>
-          <p className="text-charcoal/70">Join Forno and start ordering</p>
+            <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
+              Create Account
+            </h1>
+            <p className="text-charcoal/70">Join Forno and start ordering</p>
+          </div>
         </div>
 
         {error && (

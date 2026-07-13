@@ -40,13 +40,14 @@ const AdminLogin = () => {
                 forno
               </span>
             </div>
-          <span className="text-xs font-semibold text-deep-tomato uppercase tracking-widest">
-            Admin Portal
-          </span>
-          <h1 className="font-fraunces text-3xl font-bold text-charcoal mt-6 mb-2">
-            Admin Sign In
-          </h1>
-          <p className="text-charcoal/70">Access the admin dashboard</p>
+            <span className="text-xs font-semibold text-deep-tomato uppercase tracking-widest">
+              Admin Portal
+            </span>
+            <h1 className="font-fraunces text-3xl font-bold text-charcoal mt-6 mb-2">
+              Admin Sign In
+            </h1>
+            <p className="text-charcoal/70">Access the admin dashboard</p>
+          </div>
         </div>
 
         {error && (

@@ -68,6 +68,7 @@ const VerifyEmail = () => {
             </Link>
           </div>
         )}
+        </div>
       </Card>
     </div>
   );

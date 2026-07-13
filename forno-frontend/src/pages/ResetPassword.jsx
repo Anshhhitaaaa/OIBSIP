@@ -20,21 +20,27 @@ const ResetPassword = () => {
   if (submitted) {
     return (
       <div className="min-h-screen bg-warm-cream flex items-center justify-center p-6">
-        <Card className="w-full max-w-md p-8 text-center">
-          <Link to="/" className="inline-flex items-center justify-center gap-2 mb-8">
-            <Flame className="w-8 h-8 text-char-orange" />
-            <span className="font-fraunces text-2xl font-bold text-charcoal">forno</span>
+        <Card className="w-full max-w-md p-8">
+          <Link to="/" className="flex items-center gap-2 text-charcoal/70 hover:text-charcoal mb-4">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Home
           </Link>
-          <div className="text-6xl mb-4">✅</div>
-          <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
-            Password Reset Successful
-          </h1>
-          <p className="text-charcoal/70 mb-8">
-            Your password has been updated successfully.
-          </p>
-          <Link to="/login">
-            <Button size="lg">Sign In Now</Button>
-          </Link>
+          <div className="text-center">
+            <Link to="/" className="inline-flex items-center justify-center gap-2 mb-8">
+              <Flame className="w-8 h-8 text-char-orange" />
+              <span className="font-fraunces text-2xl font-bold text-charcoal">forno</span>
+            </Link>
+            <div className="text-6xl mb-4">✅</div>
+            <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
+              Password Reset Successful
+            </h1>
+            <p className="text-charcoal/70 mb-8">
+              Your password has been updated successfully.
+            </p>
+            <Link to="/login">
+              <Button size="lg">Sign In Now</Button>
+            </Link>
+          </div>
         </Card>
       </div>
     );
@@ -53,10 +59,11 @@ const ResetPassword = () => {
               <Flame className="w-8 h-8 text-char-orange" />
               <span className="font-fraunces text-2xl font-bold text-charcoal">forno</span>
             </Link>
-          <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
-            Reset Password
-          </h1>
-          <p className="text-charcoal/70">Enter your new password</p>
+            <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
+              Reset Password
+            </h1>
+            <p className="text-charcoal/70">Enter your new password</p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
