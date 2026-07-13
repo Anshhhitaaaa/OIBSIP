@@ -44,7 +44,7 @@ const UserNavbar = () => {
             )}
             
             {activeOrder && (
-              <Link to={`/orders/${activeOrder.id}`} className="flex items-center gap-1 text-char-orange font-semibold hover:opacity-80 transition-opacity">
+              <Link to={`/orders/${activeOrder._id}`} className="flex items-center gap-1 text-char-orange font-semibold hover:opacity-80 transition-opacity">
                 <MapPin className="w-4 h-4" />
                 <span>Track Order</span>
               </Link>
@@ -82,7 +82,7 @@ const UserNavbar = () => {
                   </Link>
                   {activeOrder && (
                     <Link
-                      to={`/orders/${activeOrder.id}`}
+                      to={`/orders/${activeOrder._id}`}
                       className="block px-4 py-3 text-charcoal hover:bg-charcoal/5 transition-colors"
                       onClick={() => setIsDropdownOpen(false)}
                     >
