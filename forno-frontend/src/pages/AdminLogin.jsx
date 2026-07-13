@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Card from '../components/ui/Card';
 import { useAdminAuth } from '../context/AdminAuthContext';
-import { Flame } from 'lucide-react';
+import { Flame, ArrowLeft } from 'lucide-react';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -28,13 +28,18 @@ const AdminLogin = () => {
   return (
     <div className="min-h-screen bg-charcoal flex items-center justify-center p-6">
       <Card className="w-full max-w-md p-8 bg-white">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Flame className="w-8 h-8 text-char-orange" />
-            <span className="font-fraunces text-2xl font-bold text-charcoal">
-              forno
-            </span>
-          </div>
+        <div className="mb-8">
+          <Link to="/" className="flex items-center gap-2 text-charcoal/70 hover:text-charcoal mb-4">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Home
+          </Link>
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Flame className="w-8 h-8 text-char-orange" />
+              <span className="font-fraunces text-2xl font-bold text-charcoal">
+                forno
+              </span>
+            </div>
           <span className="text-xs font-semibold text-deep-tomato uppercase tracking-widest">
             Admin Portal
           </span>

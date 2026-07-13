@@ -30,6 +30,12 @@ const AdminNavbar = () => {
         {admin && (
           <div className="flex items-center gap-6">
             <Link 
+              to="/" 
+              className="text-warm-cream/80 hover:text-warm-cream font-medium"
+            >
+              Back to Site
+            </Link>
+            <Link 
               to="/admin/dashboard" 
               className="text-warm-cream/80 hover:text-warm-cream font-medium"
             >

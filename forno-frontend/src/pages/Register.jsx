@@ -5,7 +5,7 @@ import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Card from '../components/ui/Card';
 import { useAuth } from '../context/AuthContext';
-import { Flame } from 'lucide-react';
+import { Flame, ArrowLeft } from 'lucide-react';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -29,11 +29,16 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-warm-cream flex items-center justify-center p-6">
       <Card className="w-full max-w-md p-8">
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <Flame className="w-8 h-8 text-char-orange" />
-            <span className="font-fraunces text-2xl font-bold text-charcoal">forno</span>
+        <div className="mb-8">
+          <Link to="/" className="flex items-center gap-2 text-charcoal/70 hover:text-charcoal mb-4">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Home
           </Link>
+          <div className="text-center">
+            <Link to="/" className="inline-flex items-center gap-2 mb-6">
+              <Flame className="w-8 h-8 text-char-orange" />
+              <span className="font-fraunces text-2xl font-bold text-charcoal">forno</span>
+            </Link>
           <h1 className="font-fraunces text-3xl font-bold text-charcoal mb-2">
             Create Account
           </h1>
